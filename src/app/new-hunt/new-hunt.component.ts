@@ -1,12 +1,17 @@
 import { Component } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-new-hunt',
+  selector: 'new-hunt',
   standalone: true,
-  imports: [],
+  imports: [
+    MatButtonModule,
+  ],
   templateUrl: './new-hunt.component.html',
   styleUrl: './new-hunt.component.scss'
 })
 export class NewHuntComponent {
-
+  onNewHunt(): void {
+    
+  }
 }
