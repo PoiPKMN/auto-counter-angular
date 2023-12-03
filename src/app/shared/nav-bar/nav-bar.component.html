@@ -1,0 +1,12 @@
+<mat-toolbar>
+  <button
+    mat-icon-button
+    (click)="onBack()"
+    [disabled]="location.isCurrentPathEqualTo('')"
+    [style.transition]="'all 500ms'"
+  >
+    <fa-icon [icon]="backIcon"></fa-icon>
+  </button>
+
+  <span>Auto Counter</span>
+</mat-toolbar>
