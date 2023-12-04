@@ -3,14 +3,18 @@ const path = require('path');
 const url = require('url');
 const PORT = 4400;
 const fs = require('fs');
+const { keysIn } = require('lodash');
 
-let win;
+let wins = new Map();
 
-const createWindow = () => {
+const gHeight = 600;
+const gWidth = 800;
+
+const createWindow = (windowId, extendedPath, height, width, timeout) => {
   setTimeout(() => {
-    win = new BrowserWindow({
-      width: 800,
-      height: 600,
+    const newWindow = new BrowserWindow({
+      width: width,
+      height: height,
       icon: './src/favicon.ico',
       webPreferences: {
         nodeIntegration: false,
@@ -20,21 +24,22 @@ const createWindow = () => {
       }
     });
 
-    win.loadURL(url.format({
-      pathname: `localhost:${PORT}`,
+    newWindow.loadURL(url.format({
+      pathname: `localhost:${PORT}/` + extendedPath,
       protocol: 'http:',
       slashes: true
     }));
 
-    win.webContents.openDevTools();
+    newWindow.webContents.openDevTools();
 
-    win.on('closed', () => {
-      win = null;
+    newWindow.on('closed', () => {
+      wins.delete(windowId);
     });
-  }, 10000);
+    wins.set(windowId, newWindow);
+  }, timeout);
 }
 
-app.on('ready', createWindow);
+app.on('ready', () => createWindow('mainWindow', '', gHeight, gWidth, 10000));
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -44,7 +49,7 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   if (win === null) {
-    createWindow();
+    createWindow('mainWindow', '', gHeight, gWidth, 10000);
   }
 });
 
@@ -55,4 +60,10 @@ ipcMain.handle('getFolders', () => {
 
 ipcMain.handle('addWorkspaceFolder', async (_, folderName) => {
   fs.mkdirSync('./src/workspace/' + folderName, { recursive: true });
+});
+
+ipcMain.handle('createBrowserWindow', (_, path) => {
+  const { screen } = require('electron');
+  const { height, width } = screen.getPrimaryDisplay().workAreaSize
+  createWindow((keysIn(wins).length + 1).toString(), path, height, width, 0);
 });

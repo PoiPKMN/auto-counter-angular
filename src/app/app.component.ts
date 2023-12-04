@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NavBarComponent } from './shared/nav-bar/nav-bar.component';
 import { WorkspaceManagerService } from './shared/services/workspace-manager.service';
+import { Observable } from 'rxjs';
+import { NavBarService } from './shared/nav-bar/nav-bar.service';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +15,7 @@ import { WorkspaceManagerService } from './shared/services/workspace-manager.ser
     RouterLink,
     RouterLinkActive,
     NavBarComponent,
+    AsyncPipe
   ],
   providers: [
     WorkspaceManagerService,
@@ -21,9 +24,15 @@ import { WorkspaceManagerService } from './shared/services/workspace-manager.ser
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  constructor(private workspaceManager: WorkspaceManagerService) {}
+  isShowToolBar$!: Observable<boolean>;
+
+  constructor(
+    private workspaceManager: WorkspaceManagerService,
+    private navBarService: NavBarService,
+  ) {}
 
   ngOnInit(): void {
     this.workspaceManager.initDirectories();
+    this.isShowToolBar$ = this.navBarService.getShowToolBar$();
   }
 }

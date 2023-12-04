@@ -1,4 +1,6 @@
 <div [style.height]="'100%'">
-  <nav-bar></nav-bar>
+  <ng-container *ngIf="isShowToolBar$ | async">
+    <nav-bar></nav-bar>
+  </ng-container>
   <router-outlet></router-outlet>
 </div>

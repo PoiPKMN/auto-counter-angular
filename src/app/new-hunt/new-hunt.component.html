@@ -46,14 +46,13 @@
 <div
   [style]="{
     position: 'fixed',
-    width: '-webkit-fill-available',
     height: '50px',
     backgroundColor: 'hsl(0, 0%, 20%)',
     bottom: '0',
     margin: '0.5rem',
     borderRadius: '8px',
     boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
-    maxWidth: '500px',
+    width: 'clamp(250px, 50%, 500px)',
     left: '50%',
     transform: 'translateX(-50%)',
   }"

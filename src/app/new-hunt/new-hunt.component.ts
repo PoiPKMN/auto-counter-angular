@@ -26,7 +26,7 @@ export class NewHuntComponent {
   triggers: any[] = [];
 
   onAddNewTrigger(): void {
-
+    (window as any).mainApi.createBrowserWindow('new-trigger');
   }
 
   onFinish(): void {

@@ -2,10 +2,13 @@ const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
 
-let win;
+let wins = new Map();
 
-const createWindow = () => {
-  win = new BrowserWindow({
+const gHeight = 600;
+const gWidth = 800;
+
+const createWindow = (windowId, extendedPath) => {
+  const newWindow = new BrowserWindow({
     width: 800,
     height: 600,
     icon: path.join(__dirname, 'favicon.ico'),
@@ -17,18 +20,19 @@ const createWindow = () => {
     }
   });
 
-  win.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
+  newWindow.loadURL(url.format({
+    pathname: path.join(__dirname, 'index.html/' + extendedPath),
     protocol: 'file:',
     slashes: true
   }));
 
-  win.on('closed', () => {
-    win = null;
+  newWindow.on('closed', () => {
+    wins.delete(windowId);
   });
+  wins.set(windowId, newWindow);
 }
 
-app.on('ready', createWindow);
+app.on('ready', () => createWindow('mainWindow', '', gHeight, gWidth));
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -38,7 +42,7 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   if (win === null) {
-    createWindow();
+    createWindow('mainWindow', '', gHeight, gWidth);
   }
 });
 
@@ -49,4 +53,10 @@ ipcMain.handle('getFolders', () => {
 
 ipcMain.handle('addWorkspaceFolder', async (_, folderName) => {
   fs.mkdirSync('./src/workspace/' + folderName, { recursive: true });
+});
+
+ipcMain.handle('createBrowserWindow', (_, path) => {
+  const { screen } = require('electron');
+  const { height, width } = screen.getPrimaryDisplay().workAreaSize
+  createWindow((keysIn(wins).length + 1).toString(), path, height, width, 0);
 });
