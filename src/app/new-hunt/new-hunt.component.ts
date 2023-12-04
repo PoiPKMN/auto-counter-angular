@@ -23,5 +23,13 @@ import { FlexContainerComponent } from '../shared/flex-container/flex-container.
 export class NewHuntComponent {
   huntName: string = '';
 
-  onAddNewTrigger(): void {}
+  triggers: any[] = [];
+
+  onAddNewTrigger(): void {
+
+  }
+
+  onFinish(): void {
+
+  }
 }

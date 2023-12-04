@@ -1,13 +1,18 @@
 <div [style]="{
-  width: '100%',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
+  alignItems: 'center',
+  padding: '1rem',
 }">
-  <mat-form-field class="hunt-name">
+  <mat-form-field [style.maxWidth]="'500px'">
     <mat-label>Hunt Name</mat-label>
 
-    <input matInput type="text" [(ngModel)]="huntName">
+    <input
+      matInput
+      type="text"
+      [(ngModel)]="huntName"
+    >
 
     @if (huntName) {
       <button
@@ -36,4 +41,31 @@
     <div [style.min-height]="'281.25px'" [style.width]="'auto'" [style.aspect-ratio]="'16 / 9'" [style.min-width]="'500px'" [style.background-color]="'red'"></div>
     <!-- mock data -->
   </flex-container>
+</div>
+
+<div
+  [style]="{
+    position: 'fixed',
+    width: '-webkit-fill-available',
+    height: '50px',
+    backgroundColor: 'hsl(0, 0%, 20%)',
+    bottom: '0',
+    margin: '0.5rem',
+    borderRadius: '8px',
+    boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
+    maxWidth: '500px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+  }"
+>
+  <button
+    mat-raised-button
+    (click)="onFinish()"
+    [disabled]="!huntName || !triggers.length"
+    [style]="{
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+    }"
+  >Finish</button>
 </div>
