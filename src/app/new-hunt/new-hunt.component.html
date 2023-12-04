@@ -1,1 +1,39 @@
-new hunt
+<div [style]="{
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+}">
+  <mat-form-field class="hunt-name">
+    <mat-label>Hunt Name</mat-label>
+
+    <input matInput type="text" [(ngModel)]="huntName">
+
+    @if (huntName) {
+      <button
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="huntName = ''"
+      ><mat-icon>close</mat-icon>
+      </button>
+    }
+  </mat-form-field>
+
+  <button
+    mat-raised-button
+    (click)="onAddNewTrigger()"
+    [style.width]="'max-content'"
+    [style.place-self]="'center'"
+    [style.margin-bottom]="'22px'"
+  >Add new trigger</button>
+
+  <flex-container>
+    <!-- mock data -->
+    <div [style.min-height]="'281.25px'" [style.width]="'auto'" [style.aspect-ratio]="'16 / 9'" [style.min-width]="'500px'" [style.background-color]="'red'"></div>
+    <div [style.min-height]="'281.25px'" [style.width]="'auto'" [style.aspect-ratio]="'16 / 9'" [style.min-width]="'500px'" [style.background-color]="'red'"></div>
+    <div [style.min-height]="'281.25px'" [style.width]="'auto'" [style.aspect-ratio]="'16 / 9'" [style.min-width]="'500px'" [style.background-color]="'red'"></div>
+    <div [style.min-height]="'281.25px'" [style.width]="'auto'" [style.aspect-ratio]="'16 / 9'" [style.min-width]="'500px'" [style.background-color]="'red'"></div>
+    <!-- mock data -->
+  </flex-container>
+</div>

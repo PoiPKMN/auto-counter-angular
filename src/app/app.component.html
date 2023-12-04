@@ -1,6 +1,8 @@
 <div [style.height]="'100%'">
   <nav-bar></nav-bar>
-  <div [style.margin-top]="'1rem'">
+  <div [style]="{
+    padding: '1rem',
+  }">
     <router-outlet></router-outlet>
   </div>
 </div>
