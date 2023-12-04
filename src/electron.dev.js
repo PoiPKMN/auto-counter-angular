@@ -1,7 +1,8 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const url = require('url');
-const PORT = 4200;
+const PORT = 4400;
+const fs = require('fs');
 
 let win;
 
@@ -10,7 +11,13 @@ const createWindow = () => {
     win = new BrowserWindow({
       width: 800,
       height: 600,
-      icon: './src/favicon.ico'
+      icon: './src/favicon.ico',
+      webPreferences: {
+        nodeIntegration: false,
+        contextIsolation: true,
+        preload: path.join(__dirname, 'preload.js'),
+        sandbox: false,
+      }
     });
 
     win.loadURL(url.format({
@@ -39,4 +46,13 @@ app.on('activate', () => {
   if (win === null) {
     createWindow();
   }
+});
+
+ipcMain.handle('getFolders', () => {
+  const files = fs.readdirSync('./src/workspace', { withFileTypes: true });
+  return files.filter((dir) => !dir.isFile());
+});
+
+ipcMain.handle('addWorkspaceFolder', async (_, folderName) => {
+  fs.mkdirSync('./src/workspace/' + folderName, { recursive: true });
 });

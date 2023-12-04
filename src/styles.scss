@@ -2,6 +2,20 @@
 
 html, body {
   height: 100%;
+  background-color: hsl(0, 0%, 15%);
+  color: hsl(0, 0%, 90%);
+
+  &::-webkit-scrollbar {
+    width: 16px;
+  }
+  &::-webkit-scrollbar-track {
+    background: hsl(0, 0%, 10%);
+    border-radius: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: hsl(0, 0%, 20%);
+    border-radius: 5px;
+  }
 }
 
 body {

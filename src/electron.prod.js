@@ -9,6 +9,12 @@ const createWindow = () => {
     width: 800,
     height: 600,
     icon: path.join(__dirname, 'favicon.ico'),
+    webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js'),
+      sandbox: false,
+    }
   });
 
   win.loadURL(url.format({
@@ -34,4 +40,13 @@ app.on('activate', () => {
   if (win === null) {
     createWindow();
   }
+});
+
+ipcMain.handle('getFolders', () => {
+  const files = fs.readdirSync('./src/workspace', { withFileTypes: true });
+  return files.filter((dir) => !dir.isFile());
+});
+
+ipcMain.handle('addWorkspaceFolder', async (_, folderName) => {
+  fs.mkdirSync('./src/workspace/' + folderName, { recursive: true });
 });
