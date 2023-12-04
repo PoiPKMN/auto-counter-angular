@@ -21,7 +21,8 @@ const createWindow = (windowId, extendedPath, height, width, timeout) => {
         contextIsolation: true,
         preload: path.join(__dirname, 'preload.js'),
         sandbox: false,
-      }
+      },
+      autoHideMenuBar: true,
     });
 
     newWindow.loadURL(url.format({
